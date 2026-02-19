@@ -5,7 +5,7 @@ import { getRecipeFromChefClaude } from "./ai"
 
 export default function Main() {
     const [ingredients, setIngredients] = React.useState(
-        ["salt"]
+        ["sale"]
     )
     const [recipe, setRecipe] = React.useState("")
 
@@ -24,11 +24,11 @@ export default function Main() {
             <form action={addIngredient} className="add-ingredient-form">
                 <input
                     type="text"
-                    placeholder="e.g. oregano"
-                    aria-label="Add ingredient"
+                    placeholder="es. origano"
+                    aria-label="Aggiungi ingrediente"
                     name="ingredient"
                 />
-                <button>Add ingredient</button>
+                <button>Aggiungi ingrediente</button>
             </form>
 
             {ingredients.length > 0 &&
