@@ -8,28 +8,20 @@ Formatta la tua risposta in markdown per renderla più facile da visualizzare in
 `
 
 const openai = new OpenAI({
-    apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true,
+    apiKey: process.env.OPENAI_API_KEY,
 })
 
-export async function getRecipeFromChefClaude(ingredientsArr) {
-    if (import.meta.env.PROD) {
-        const response = await fetch("/.netlify/functions/get-recipe", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ingredients: ingredientsArr }),
-        })
-        const { recipe } = await response.json()
-        return recipe
-    }
+export default async (req) => {
+    const { ingredients } = await req.json()
 
     const response = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         max_tokens: 1024,
         messages: [
             { role: "system", content: SYSTEM_PROMPT },
-            { role: "user", content: `Ho ${ingredientsArr.join(", ")}. Suggeriscimi una ricetta!` },
+            { role: "user", content: `Ho ${ingredients.join(", ")}. Suggeriscimi una ricetta!` },
         ],
     })
-    return response.choices[0].message.content
+
+    return Response.json({ recipe: response.choices[0].message.content })
 }
