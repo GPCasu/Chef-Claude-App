@@ -7,11 +7,6 @@ La ricetta può includere ingredienti aggiuntivi che non hanno menzionato, ma ce
 Formatta la tua risposta in markdown per renderla più facile da visualizzare in una pagina web. Devi rispondere in italiano
 `
 
-const openai = new OpenAI({
-    apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true,
-})
-
 export async function getRecipeFromChefClaude(ingredientsArr) {
     if (import.meta.env.PROD) {
         const response = await fetch("/.netlify/functions/get-recipe", {
@@ -22,6 +17,11 @@ export async function getRecipeFromChefClaude(ingredientsArr) {
         const { recipe } = await response.json()
         return recipe
     }
+
+    const openai = new OpenAI({
+        apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+        dangerouslyAllowBrowser: true,
+    })
 
     const response = await openai.chat.completions.create({
         model: "gpt-4o-mini",
